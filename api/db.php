@@ -90,11 +90,20 @@ class myDB{
         return $count['count(*)'];
     }
 
+    function max($target){
+        $pdo = $this->dbLogin();
+        $sql = "select max($target) from `$this->table`";
+
+        $max = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+        return $max["max($target)"];
+    }
+
     function sql($sql){
         $pdo = $this->dbLogin();
         return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 
+$Poster = new myDB('localhost', 'utf8', 'db15_3', 'root', '', 'poster');
 
 ?>
