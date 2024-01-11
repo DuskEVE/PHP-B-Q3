@@ -28,10 +28,10 @@
     <div style="width: 100%; height: 190px; overflow: auto">
 
         <?php
-        $datas = $Poster->searchAll();
+        $datas = $Poster->searchAll([], "order by `rank` asc");
         foreach($datas as $index=>$data){
         ?>
-        <div class="item">
+        <div class="item" data-id="<?=$data['id']?>">
             <div>
                 <img src="./img/<?=$data['img']?>" style="height: 90px;">
             </div>
@@ -39,11 +39,15 @@
                 <input type="text" name="name[]" value="<?=$data['name']?>">
             </div>
             <div>
-                <input type="button" value="往上">
-                <input type="button" value="往下">
+                <input class="btn" type="button" value="往上" 
+                   data-now="<?=$data['id']?>" 
+                    data-to="<?=($index==0? $data['id']:$datas[$index-1]['id'])?>" data-table="<?=$_GET['do']?>">
+                <input class="btn" type="button" value="往下" 
+                   data-now="<?=$data['id']?>" 
+                    data-to="<?=($index==count($datas)-1? $data['id']:$datas[$index+1]['id'])?>" data-table="<?=$_GET['do']?>">
             </div>
             <div>
-                <input type="checkbox" name="display[]" value="<?=$data['id']?>" <?=($data['display']==1? "checked":"")?>>顯示
+                <input type="checkbox" name="display[]" value="<?=$data['id']?>" <?=($data['display']==1?"checked":"")?>>顯示
                 <input type="checkbox" name="del[]" value="<?=$data['id']?>">刪除
                 <select name="ani[]">
                     <option value="1" <?=($data['ani']==1?"selected":"")?>>淡入淡出</option>
@@ -56,7 +60,7 @@
         </div>
         <?php
         }
-        ?>
+        ?>"
     </div>
 
     <div class="ct">
@@ -85,3 +89,21 @@
         </div>
     </form>
 </div>
+
+<script>
+    $(".btn").on('click', (event) => {
+        let now = $(event.target).data('now');
+        let to = $(event.target).data('to');
+        let table = $(event.target).data('table');
+        // let item = $(`.item[data-id='${now}']`);
+        // let targetItem = $(`.item[data-id='${to}']`);
+
+        $.post("./api/switch.php", {now, to, table}, () => {
+            location.reload();
+        });
+        // $.post("./api/switch.php", {now, to, table});
+        // temp = item.html();
+        // item.html(targetItem.html());
+        // targetItem.html(temp);
+    })
+</script>
