@@ -1,3 +1,13 @@
+<?php
+  include_once "./api/db.php";
+  $error = "";
+
+  if(!empty($_POST)){
+    if($_POST['user']=='admin' && $_POST['password']==1234) $_SESSION['login'] = $_POST['user'];
+    else $error = "帳號或密碼錯誤!";
+  }
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0055)?do=admin -->
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,7 +38,9 @@
   </div>
 
   <div id="mm">
-
+    <?php
+    if(isset($_SESSION['login'])){
+    ?>
     <div class="ct a rb" style="position:relative; width:101.5%; left:-1%; padding:3px; top:-9px;"> 
       <a href="?do=title">網站標題管理</a>| 
       <a href="?do=go">動態文字管理</a>| 
@@ -49,6 +61,29 @@
       ?>
     </div>
 
+    <?php
+    }
+    else{
+    ?>
+    <form action="" method="post" style="width: 100%; text-align: center;">
+    <?php
+    if(strlen($error) > 0) echo "<div style='color:red;'>$error</div>"
+    ?>
+      <table style="width: 40%; margin:auto">
+        <tr>
+          <td><label for="user">帳號:</label></td>
+          <td><input type="text" name="user" id="user"></td>
+        </tr>
+        <tr>
+          <td><label for="password">密碼:</label></td>
+          <td><input type="password" name="password" id="password"></td>
+        </tr>
+      </table>
+      <div><input type="submit" value="登入"></div>
+    </form>
+    <?php
+    }
+    ?>
   </div>
 
   <div id="bo"> ©Copyright 2010~2014 ABC影城 版權所有 </div>
