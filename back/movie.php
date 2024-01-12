@@ -90,11 +90,14 @@
     });
     $('.edit-btn').on('click', (event) => {
         let id = $(event.target).data('id');
+        location.href = `./admin.php?do=edit_movie&id=${id}`;
     });
     $('.del-btn').on('click', (event) => {
         let id = $(event.target).data('id');
-        let table = $(enent.target).data('table');
-        $.post('./api/del.php', {id, table});
+        let table = $(event.target).data('table');
+        $.post('./api/del.php', {id, table}, () => {
+            location.reload();
+        });
     });
 
 </script>
