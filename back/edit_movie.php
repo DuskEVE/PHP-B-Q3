@@ -9,7 +9,7 @@
 <?php
 $data = $Movie->search(['id'=>$_GET['id']]);
 ?>
-<form action="./api/edit_movie.php" method="post" enctype="multipart/form-data">
+<form action="./api/update_movie.php" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="<?=$data['id']?>">
 
     <div style="display: flex; align-items: start;">
@@ -86,7 +86,7 @@ $data = $Movie->search(['id'=>$_GET['id']]);
     </div>
 
     <div class="ct">
-        <input type="submit" value="新增">
+        <input type="submit" value="編輯">
         <input type="reset" value="重置">
     </div>
 </form>
