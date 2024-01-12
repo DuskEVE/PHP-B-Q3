@@ -174,8 +174,19 @@
     let position = 0;
     let total = $('.btn').length;
     let p = 0;
-
+    let timer = setInterval(() => {slide()}, 3000);
+    let now = 0;
+    
     $('.item').eq(0).show();
+
+    function slide(){
+        console.log('bruh');
+        $('.item').hide();
+        if(now+1 < total) now += 1;
+        else now = 0;
+        $('.item').eq(now).show();
+    }
+
 
     $('.left,.right').on('click', (event) => {
         let dir = $(event.target).attr('class');
