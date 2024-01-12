@@ -105,5 +105,6 @@ class myDB{
 }
 
 $Poster = new myDB('localhost', 'utf8', 'db15_3', 'root', '', 'poster');
+$Movie = new myDB('localhost', 'utf8', 'db15_3', 'root', '', 'movie');
 
 ?>
