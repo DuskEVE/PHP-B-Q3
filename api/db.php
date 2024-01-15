@@ -106,5 +106,13 @@ class myDB{
 
 $Poster = new myDB('localhost', 'utf8', 'db15_3', 'root', '', 'poster');
 $Movie = new myDB('localhost', 'utf8', 'db15_3', 'root', '', 'movie');
+$Order = new myDB('localhost', 'utf8', 'db15_3', 'root', '', 'orders');
+
+$sess = [1=>'14:00 ~ 16:00',
+         2=>'16:00 ~ 18:00',
+         3=>'18:00 ~ 20:00',
+         4=>'20:00 ~ 22:00',
+         5=>'22:00 ~ 24:00',
+        ];
 
 ?>
