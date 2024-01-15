@@ -104,8 +104,8 @@
                     foreach($posters as $poster){
                     ?>
                     <div class="btn">
-                        <div><img src="./img/<?=$poster['img']?>"></div>
-                        <div><?=$poster['name']?></div>
+                        <div style="pointer-events: none;"><img src="./img/<?=$poster['img']?>"></div>
+                        <div style="pointer-events: none;"><?=$poster['name']?></div>
                     </div>
                     <?php
                     }
@@ -182,27 +182,27 @@
     
     $('.item').eq(0).show();
 
-    function slide(){
+    function slide(target){
         let ani = $('.item').eq(now).data('ani');
-        console.log(ani);
+        let next = (now === total-1? 0:now+1);
+        if(target !== undefined) next = target;
+
         if(ani === 1){
             $('.item').eq(now).fadeOut(1000, () => {
-                now = (now === total-1? 0:now+1);
                 $('.item').eq(now).fadeIn(1000);
             });
         }
         else if(ani === 2){
             $('.item').eq(now).hide(1000, () => {
-                now = (now === total-1? 0:now+1);
                 $('.item').eq(now).show(1000);
             });
         }
         else if(ani === 3){
             $('.item').eq(now).slideUp(1000, () => {
-                now = (now === total-1? 0:now+1);
                 $('.item').eq(now).slideDown(1000);
             });
         }
+        now = next;
 
         // $('.item').hide();
         // if(now+1 < total) now += 1;
@@ -222,4 +222,20 @@
 
         $('.btn').animate({right:90*position});
     });
+
+    $('.btns').hover(() => {
+            clearInterval(timer);
+        },
+        () => {
+            timer = setInterval(() => {slide()}, 3000);
+        }
+    );
+    $('.btn').on('click', (event) => {
+        let index = $(event.target).index();
+        slide(index);
+    })
+    // $('.btn').on('click', function() {
+    //     let index = $(this).index();
+    //     slide(index);
+    // })
 </script>
