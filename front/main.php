@@ -1,7 +1,10 @@
 <style>
     .lists{
-        /* position: relative; */
+        width: 200px;
+        height: 240px;
+        position: relative;
         left: 114px;
+        overflow: hidden;
     }
     .item *{
         box-sizing: border-box;
@@ -10,7 +13,7 @@
         width: 200px;
         height: 240px;
         margin: auto;
-        /* position: absolute; */
+        position: absolute;
         box-sizing: border-box;
         display: none;
     }
@@ -85,7 +88,7 @@
                 $posters = $Poster->searchAll(['display'=>1], "order by rank");
                 foreach($posters as $poster){
                 ?>
-                <div class="item">
+                <div class="item" data-ani="<?=$poster['ani']?>">
                     <div><img src="./img/<?=$poster['img']?>"></div>
                     <div><?=$poster['name']?></div>
                 </div>
@@ -180,13 +183,32 @@
     $('.item').eq(0).show();
 
     function slide(){
-        console.log('bruh');
-        $('.item').hide();
-        if(now+1 < total) now += 1;
-        else now = 0;
-        $('.item').eq(now).show();
-    }
+        let ani = $('.item').eq(now).data('ani');
+        console.log(ani);
+        if(ani === 1){
+            $('.item').eq(now).fadeOut(1000, () => {
+                now = (now === total-1? 0:now+1);
+                $('.item').eq(now).fadeIn(1000);
+            });
+        }
+        else if(ani === 2){
+            $('.item').eq(now).hide(1000, () => {
+                now = (now === total-1? 0:now+1);
+                $('.item').eq(now).show(1000);
+            });
+        }
+        else if(ani === 3){
+            $('.item').eq(now).slideUp(1000, () => {
+                now = (now === total-1? 0:now+1);
+                $('.item').eq(now).slideDown(1000);
+            });
+        }
 
+        // $('.item').hide();
+        // if(now+1 < total) now += 1;
+        // else now = 0;
+        // $('.item').eq(now).show();
+    }
 
     $('.left,.right').on('click', (event) => {
         let dir = $(event.target).attr('class');
