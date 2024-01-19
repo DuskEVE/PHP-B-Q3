@@ -15,7 +15,7 @@
             <select name="session" id="session"></select>
         </div>
         <div>
-            <button>確定</button>
+            <button onclick="booking()">確定</button>
             <button>重置</button>
         </div>
     </div>
@@ -64,16 +64,29 @@
     }
     function getDates(id){
         $.get("./api/get_dates.php",{id},(dates)=>{
-                $("#date").html(dates);
-                let movie=$("#movie").val()
-                let date=$("#date").val()
-                getSessions(movie,date)
+            $("#date").html(dates);
+            let movie=$("#movie").val()
+            let date=$("#date").val()
+            getSessions(movie,date)
         })
     }
     function getSessions(movie,date){
         $.get("./api/get_sessions.php",{movie,date},(sessions)=>{
                 $("#session").html(sessions);
         })
+    }
+    function booking(){
+        let order = {
+            movie_id: $('#movie').val(),
+            date: $('#date').val(),
+            session: $('#session').val()
+        };
+        console.log(order);
+        $.get('./api/booking.php', order, (booking) => {
+            $('#booking').html(booking);
+            $('#select').hide();
+            $('#booking').show();
+        });
     }
 
     // const getMovies = () => {

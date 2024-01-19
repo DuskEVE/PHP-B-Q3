@@ -1,0 +1,30 @@
+<?php
+    $order = $Order->find(['no'=>$_GET['no']]);
+?>
+
+<table>
+    <tr>
+        <td>電影名稱:</td>
+        <td><?=$order['moive'];?></td>
+    </tr>
+    <tr>
+        <td>電影名稱:</td>
+        <td><?=$order['movie'];?></td>
+    </tr>
+    <tr>
+        <td>日期:</td>
+        <td><?=$order['date'];?></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
