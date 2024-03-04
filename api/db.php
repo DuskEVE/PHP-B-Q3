@@ -83,4 +83,5 @@ class myDB{
     }
 }
 
+$Poster = new myDB('poster');
 ?>

@@ -25,6 +25,14 @@ include_once "./api/db.php";
       </marquee>
     </div>
     <div id="mm">
+      <div class="ct a rb" style="position:relative; width:101.5%; left:-1%; padding:3px; top:-9px;">
+        <a href="?do=">網站標題管理</a>| 
+        <a href="?do=">動態文字管理</a>| 
+        <a href="?do=poster">預告片海報管理</a>| 
+        <a href="?do=">院線片管理</a>| 
+        <a href="?do=">電影訂票管理</a> 
+      </div>
+
       <?php
       $do = (isset($_GET['do']) ? $_GET['do'] : "main");
       $file = "./back/$do.php";
