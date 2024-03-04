@@ -1,4 +1,5 @@
 <?php
+session_start();
 class myDB{
     private $host = "localhost";
     private $charset = "utf8";
