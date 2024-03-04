@@ -50,7 +50,7 @@ class myDB{
             unset($target['id']);
 
             $targetSet = $this->getTargetSet($target, ",");
-            $sql = "updqte `$this->table` set $targetSet where `id`='$id'";
+            $sql = "update `$this->table` set $targetSet where `id`='$id'";
         }
         else{
             $cols = array_keys($target);

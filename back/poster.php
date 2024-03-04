@@ -36,9 +36,9 @@
                 <table class="all ct">
                     <?php
                     $posters = $Poster->searchAll([], "order by `no` asc");
-                    foreach($posters as $poster){
+                    foreach($posters as $index=>$poster){
                     ?>
-                    <tr class="wh">
+                    <tr class="wh items" data-id="<?=$poster['id']?>">
                         <input type="hidden" name="id[]" value="<?=$poster['id']?>">
                         <td style="width: 30%;">
                             <img class="poster" src="./img/<?=$poster['img']?>">
@@ -47,12 +47,12 @@
                             <input type="text" name="name[]" value="<?=$poster['name']?>" style="width: 80%;">
                         </td>
                         <td style="width: 20%;">
-                            <input type="button" value="往上">
-                            <input type="button" value="往下">
+                            <input class="switch-btn" type="button" value="往上" data-id="<?=$poster['id']?>" data-target="<?=$index==0?0:$index-1?>">
+                            <input class="switch-btn" type="button" value="往下" data-id="<?=$poster['id']?>" data-target="<?=$index==count($posters)-1?count($posters)-1:$index+1?>">
                         </td>
                         <td style="width: 18%;">
-                            <input type="checkbox" name="display[]">顯示 
-                            <input type="checkbox" name="del[]">刪除
+                            <input type="checkbox" name="display[]" value="<?=$poster['id']?>" <?=$poster['display']==1?"checked":""?>>顯示 
+                            <input type="checkbox" name="del[]" value="<?=$poster['id']?>">刪除
                         </td>
                     </tr>
                     <?php
@@ -93,3 +93,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('.switch-btn').on('click', (event) => {
+        let index = $(event.target).data('target');
+        let target = $('.items').eq(index).data('id');
+        let id = $(event.target).data('id');
+        $.get('./api/switch_poster.php', {id, target}, () => location.reload());
+    });
+</script>
