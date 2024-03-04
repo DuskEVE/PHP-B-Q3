@@ -119,6 +119,9 @@ input:focus
 {
 	text-align:center;
 }
+.all{
+	width: 100%;
+}
 .half
 {
 	width:45%;
