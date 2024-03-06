@@ -189,3 +189,9 @@ input:focus
 {
 	cursor:default;
 }
+.lg{
+	background-color: lightgray;
+}
+.wh{
+	background-color: white;
+}

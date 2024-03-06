@@ -1,10 +1,4 @@
 <style>
-    .lg{
-        background-color: lightgray;
-    }
-    .wh{
-        background-color: white;
-    }
     .poster-list{
         max-height: 200px;
         overflow-y: scroll;
