@@ -21,8 +21,8 @@
         <div class="movie-list">
             <table class="all">
                 <?php
-                $movies = $Movie->searchAll();
-                foreach($movies as $movie){
+                $movies = $Movie->searchAll([], "order by `no` asc");
+                foreach($movies as $index=>$movie){
                     $level = $Level->search(['id'=>$movie['level']]);
                 ?>
                 <tr style="border: 2px solid black; background-color: white;">
@@ -35,11 +35,11 @@
                             片名:<?=$movie['name']?> | 片長:<?=$movie['length']?> | 上映時間:<?=$movie['date']?>
                         </div>
                         <div>
-                            <button>顯示</button>
-                            <button>往上</button>
-                            <button>往下</button>
-                            <button>編輯電影</button>
-                            <button>刪除電影</button>
+                            <button class="display-btn" data-id="<?=$movie['id']?>"><?=$movie['display']==1?"隱藏":"顯示"?></button>
+                            <button class="switch-btn" data-id="<?=$movie['id']?>" data-target="<?=$index==0?$movies[0]['id']:$movies[$index-1]['id']?>">往上</button>
+                            <button class="switch-btn" data-id="<?=$movie['id']?>" data-target="<?=$index==(count($movies)-1)?$movies[count($movies)-1]['id']:$movies[$index+1]['id']?>">往下</button>
+                            <button onclick="location.href='?do=edit_movie'">編輯電影</button>
+                            <button class="del-btn" data-id="<?=$movie['id']?>">刪除電影</button>
                         </div>
                         <div><?=$movie['intro']?></div>
                     </td>
@@ -51,3 +51,23 @@
         </div>
     </div>
 </div>
+
+<script>
+$('.switch-btn').on('click', (event) => {
+    let id = $(event.target).data('id');
+    let target = $(event.target).data('target');
+
+    $.get('./api/switch_movie.php', {id, target}, () => location.reload());
+})
+$('.display-btn').on('click', (event) => {
+    let id = $(event.target).data('id');
+    let target = $(event.target);
+
+    $.get('./api/display_movie.php', {id}, (response) => target.text(response));
+})
+$('.del-btn').on('click', (event) => {
+    let id = $(event.target).data('id');
+
+    $.post('./api/del_movie.php', {id}, () => location.reload());
+})
+</script>
