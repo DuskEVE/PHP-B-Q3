@@ -85,4 +85,5 @@ class myDB{
 
 $Poster = new myDB('poster');
 $Movie = new myDB('movie');
+$Level = new myDB('level');
 ?>
