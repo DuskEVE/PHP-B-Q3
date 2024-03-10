@@ -1,14 +1,114 @@
+<style>
+    .poster{
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .poster>img{
+        height: 70%;
+    }
+    .controls{
+        height: 100px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .poster-btn{
+        height: 90%;
+        width: 0px;
+    }
+    .poster-btn.on{
+        width: auto;
+        margin: 3px;
+    }
+    .right-btn{
+        border-top: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+        border-left: 25px solid black;
+        border-right: 25px solid transparent;
+    }
+    .left-btn{
+        border-top: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+        border-left: 25px solid transparent;
+        border-right: 25px solid black;
+    }
+</style>
+
 <div class="half" style="vertical-align:top;">
     <h1>預告片介紹</h1>
     <div class="rb tab" style="width:95%;">
-        <div id="abgne-block-20111227">
-            <ul class="lists">
-            </ul>
-            <ul class="controls">
-            </ul>
+        <div class="poster">
+            <?php
+            $posters = $Poster->searchAll(['display'=>1], "order by `no` asc");
+            ?>
+            <img class="poster-img" src="./img/<?=$posters[0]['img']?>" data-next="<?=$posters[1]['id']?>">
+        </div>
+        <div class="controls">
+            <div class="left-btn"></div>
+
+            <?php
+
+            for($i=0; $i<count($posters); $i++){
+                $poster = $posters[$i];
+                $state = ($i>3?"":"on");
+                $next = ($i==count($posters)-1?$posters[0]:$posters[$i+1]);
+                $perv = ($i==0?$posters[count($posters)-1]:$posters[$i-1]);
+                echo "<img class='poster-btn poster-{$poster['id']} $state' src='./img/{$poster['img']}' 
+                    data-id='{$poster['id']}' data-next='{$next['id']}' data-perv='{$perv['id']}'>";
+            }
+            ?>
+
+            <div class="right-btn"></div>
         </div>
     </div>
 </div>
+
+<script>
+    const switchPoster = (targetId) => {
+        let target = $(`.poster-${targetId}`);
+        let id = target.data('id');
+        let perv = target.data('perv');
+        let next = target.data('next');
+        let src = target.attr('src');
+        let img = `<img class="poster-img" src="${src}" data-id="${id}" data-next="${next}" data-parv="${perv}">`;
+
+        $('.poster').fadeTo(750, 0.1, () => {
+            $('.poster').empty().append(img);
+        }).fadeTo(750, 1);
+    };
+    const resetAuto = () => {
+        clearInterval(auto);
+        auto = setInterval(() => {
+        let next = $('.poster-img').data('next');
+        switchPoster(next);
+        }, 4000);
+    };
+
+    let auto = setInterval(() => {
+        let next = $('.poster-img').data('next');
+        switchPoster(next);
+    }, 4000);
+
+    $('.poster-btn').on('click', (event) => {
+        let id = $(event.target).data('id');
+        switchPoster(id);
+
+        clearInterval(auto);
+        resetAuto();
+    });
+    $('.left-btn').on('click', () => {
+        if($('.poster-btn').first().hasClass('on')) return
+        $('.on').eq(3).animate({width:'0px'}).removeClass('on');
+        $('.on').eq(0).prev().animate({width:'82px'}).addClass('on');
+    });
+    $('.right-btn').on('click', () => {
+        if($('.poster-btn').last().hasClass('on')) return
+        $('.on').eq(3).next().animate({width:'82px'}).addClass('on');
+        $('.on').eq(0).animate({width:'0px'}).removeClass('on');
+    });
+</script>
 
 <style>
     .movie-list{
