@@ -167,8 +167,8 @@
                 <div>分級:<img src="./icon/<?=$level['img']?>" style="width: 20px;"></div>
                 <div>上映日期:<?=$movie['date']?></div>
                 <div>
-                    <button>劇情簡介</button>
-                    <button>線上訂票</button>
+                    <button onclick="location.href='?do=intro&id=<?=$movie['id']?>'">劇情簡介</button>
+                    <button onclick="location.href='?do=order&id=<?=$movie['id']?>'">線上訂票</button>
                 </div>
             </div>
         </div>
