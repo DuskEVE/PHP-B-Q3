@@ -19,6 +19,10 @@
         background-repeat: no-repeat;
         background-position: center;
     }
+    td>div{
+        margin-top: -45px;
+    }
+
 </style>
 
 <div class="rb" style="padding: 10px;">
@@ -72,7 +76,10 @@
                 for($i=1; $i<=4; $i++){
                     echo "<tr>";
                     for($j=1; $j<=5; $j++){
-                        echo "<td id='$i-$j' style='background-image: url(./icon/03D02.png);'></td>";
+                        echo "
+                        <td id='$i-$j' style='background-image: url(./icon/03D02.png);'>
+                            <div><input class='check-btn' type='checkbox' name='seat[]' value='$i-$j'>$i 排 - $j 號</div>
+                        </td>";
                     }
                     echo "</tr>";
                 }
@@ -82,7 +89,12 @@
         <div class="booking-info">
             <div>您選擇的電影是:<span class="select-name"></span></div>
             <div>您選擇的時刻是:<span class="select-time"></span></div>
-            <div>您已勾選<span class="select-count"></span>張票，最多可購買4張票</div>
+            <div>您已勾選<span class="select-count">0</span>張票，最多可購買4張票</div>
+            <input type="hidden" id="name" name="name" value="">
+            <input type="hidden" id="movie_id" name="movie_id" value="">
+            <input type="hidden" id="date" name="date" value="">
+            <input type="hidden" id="time" name="time" value="">
+            <input type="hidden" id="count" name="count" value="0">
         </div>
         <div class="ct">
             <input type="button" class="back-btn" value="上一步">
@@ -92,19 +104,44 @@
 </div>
 
 <script>
-    const getDate = (movieId) => {
-
-    }
+    const getDate = () => {
+        let id = $('.movie-id').val();
+        $.get('./api/get_movie_date.php', {id}, (response) => {
+            $('.movie-date').html(response);
+            getTime(id);
+        });
+    };
     const getTime = (movieId) => {
-        
-    }
-    const checkSeat = (movieId) => {
-
-    }
+        let id = $('.movie-id').val();
+        let date = $('.movie-date').val();
+        $.get('./api/get_movie_time.php', {id, date}, (response) => {
+            $('.movie-time').html(response);
+        })
+    };
+    const checkSeat = (movie_id, date, time) => {
+        $.get('./api/get_order.php', {movie_id, date, time}, (response) => {
+            let seats = JSON.parse(response);
+            seats.forEach(seat => {
+                $(`#${seat}`).empty().css({'background-image': 'url(./icon/03D03.png)'});
+            });
+        });
+    };
 
     $('.order-btn').on('click', () => {
+        let index = $('.movie-id').prop('selectedIndex');
+        let movie_id = $('.movie-id').val();
+        let date = $('.movie-date').val();
+        let time = $('.movie-time').val();
+        let name = $('.movie-id').children().eq(index).text();
         $('.booking').show();
         $('.order').hide();
+        $('.select-name').text(name);
+        $('.select-time').text(date+' | '+time);
+        $('#name').val(name);
+        $('#movie_id').val(movie_id);
+        $('#date').val(date);
+        $('#time').val(time);
+        checkSeat(movie_id, date, time)
     });
     $('.reset-btn').on('click', () => {
         $('.movie-id').prop('selectedIndex', 0);
@@ -115,4 +152,12 @@
         $('.booking').hide();
         $('.order').show();
     });
+    $('.movie-id').on('change', getDate);
+    $('.check-btn').on('change', (event) => {
+        if($('.check-btn:checked').length > 4) $(event.target).prop('checked', false);
+        $('#count').val($('.check-btn:checked').length);
+        $('.select-count').text($('.check-btn:checked').length);
+    });
+
+    getDate();
 </script>
