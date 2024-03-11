@@ -23,7 +23,7 @@ $level = $Level->search(['id'=>$movie['level']]);
         <table width="100%" border="0">
             <tbody>
                 <tr>
-                    <td align="center"><input type="button" value="院線片清單" onclick="lof('?')"></td>
+                    <td align="center"><input type="button" value="院線片清單" onclick="location.href='?'"></td>
                 </tr>
             </tbody>
         </table>

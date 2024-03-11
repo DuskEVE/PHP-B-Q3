@@ -111,7 +111,7 @@
             getTime(id);
         });
     };
-    const getTime = (movieId) => {
+    const getTime = () => {
         let id = $('.movie-id').val();
         let date = $('.movie-date').val();
         $.get('./api/get_movie_time.php', {id, date}, (response) => {
@@ -122,7 +122,8 @@
         $.get('./api/get_order.php', {movie_id, date, time}, (response) => {
             let seats = JSON.parse(response);
             seats.forEach(seat => {
-                $(`#${seat}`).empty().css({'background-image': 'url(./icon/03D03.png)'});
+                $(`#${seat}`).css({'background-image': 'url(./icon/03D03.png)'});
+                $(`#${seat}`).find('input').remove();
             });
         });
     };
@@ -153,6 +154,7 @@
         $('.order').show();
     });
     $('.movie-id').on('change', getDate);
+    $('.movie-date').on('change', getTime);
     $('.check-btn').on('change', (event) => {
         if($('.check-btn:checked').length > 4) $(event.target).prop('checked', false);
         $('#count').val($('.check-btn:checked').length);
