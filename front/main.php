@@ -148,11 +148,12 @@
         $today = date('Y-m-d');
         $upDate = date('Y-m-d', strtotime('-2 days'));
         $movies = $Movie->sql("select * from `movie` where `date`>='$upDate'&&`date`<='$today'&&`display`=1 order by `no` asc");
-        $pageCount = ceil($Movie->count(['display'=>1]) / 4);
+        $pageCount = 1;
+        if(count($movies)) $pageCount = ceil(count($movies) / 4);
         $now = (isset($_GET['p'])?$_GET['p']:1);
         $start = ($now-1) * 4;
         $end = $start + 4;
-        if($now == $pageCount) $end = $Movie->count(['display'=>1]);
+        if($now == $pageCount) $end = count($movies);
 
         for($i=$start; $i<$end; $i++){
             $movie = $movies[$i];
